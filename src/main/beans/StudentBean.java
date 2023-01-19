@@ -1,4 +1,4 @@
-package main;
+package main.beans;
 
 public class StudentBean {
 
