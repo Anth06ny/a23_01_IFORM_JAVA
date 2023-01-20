@@ -10,7 +10,7 @@ public class DiceBean {
         DiceBean dice = new DiceBean();
 
         int tab[] = new int[7];
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 1000; i++) {
             dice.roll();
             if (dice.getValue() < 1 || dice.getValue() > 6) {
                 System.out.println("Valeur incorrecte : " + dice.getValue());
@@ -28,7 +28,7 @@ public class DiceBean {
     }
 
     public void roll() {
-        value = new Random().nextInt(5) + 1;
+        value = new Random().nextInt(6) + 1;
     }
 
     public int getValue() {
