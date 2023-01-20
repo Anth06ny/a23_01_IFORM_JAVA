@@ -10,7 +10,6 @@ public class PlayerBean {
         this.name = name;
         cup = new CupBean();
     }
-
     public static void main(String[] args) {
         PlayerBean pb = new PlayerBean("toto");
         pb.roll();
@@ -20,6 +19,7 @@ public class PlayerBean {
         System.out.println("Le score de " + pb.getName() + " est de " + pb.getScore());
         System.out.println("Dernier lancé : " + pb.getCup().getScoreDices());
     }
+
 
     public void roll() {
         cup.roll();

@@ -11,16 +11,7 @@ public class PartyBean {
         round = 1;
     }
 
-    public static void main(String[] args) {
-        //Scanner
-        PartyBean p = new PartyBean("Toto", "tata");
-        //Jeu
-        p.getJ1().roll();
-        p.add1Round();
 
-        //Affichage des résultats
-
-    }
 
     public PlayerBean winner() {
         if (j1.getScore() > j2.getScore()) {
