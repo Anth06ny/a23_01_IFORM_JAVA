@@ -1,4 +1,4 @@
-package main;
+package main.ihmwithcontroler;
 
 import main.beans.PartyBean;
 
@@ -9,8 +9,15 @@ import java.awt.event.ActionListener;
 
 public class IHM extends JPanel implements ActionListener {
 
-    //Données
-    private PartyBean partyBean = new PartyBean("Toto", "Tata");
+    private Controler controler;
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Jeu de dés");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().add(new IHM());
+        frame.pack();
+        frame.setVisible(true);
+    }
 
 
     // Composants graphiques
@@ -36,6 +43,7 @@ public class IHM extends JPanel implements ActionListener {
      * Create the application.
      */
     public IHM() {
+
         //construct components
         jlP1 = new JLabel("Joueur 1");
 
@@ -116,85 +124,55 @@ public class IHM extends JPanel implements ActionListener {
         jbRollP1.addActionListener(this);
         jbRollP2.addActionListener(this);
 
-        refreshScreen();
-
         jbRestart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                partyBean = new PartyBean(partyBean.getJ1().getName(), partyBean.getJ2().getName());
-                refreshScreen();
+                controler.clickOnRestart();
             }
         });
 
         //Initialisation des composants
-
+        controler = new Controler(this);
     }
 
     /**
      * Launch the application.
      */
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Jeu de dés");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new IHM());
-        frame.pack();
-        frame.setVisible(true);
-    }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbRollP1) {
-            //Modifications des données
-            partyBean.getJ1().roll();
-            if (partyBean.getJ1().getCup().getScoreDices() >= 7) {
-                partyBean.getJ1().add1Point();
-            }
-            partyBean.setCurrentPlayer(partyBean.getJ2());
+            controler.clickOnRollJ1();
 
-            //Modifications graphiques
-            refreshScreen();
         } else if (e.getSource() == jbRollP2) {
-            //Modification des données
-            partyBean.getJ2().roll();
-            if (partyBean.getJ2().getCup().getScoreDices() >= 7) {
-                partyBean.getJ2().add1Point();
-            }
-            partyBean.setCurrentPlayer(partyBean.getJ1());
-            partyBean.add1Round();
-
-            //Modifications graphiques
-            refreshScreen();
+            controler.clickOnRollJ2();
         }
     }
 
-    private void refreshScreen() {
-        //Elle prend les données et met à jour l'écran
-        //PartyBean -> IHM
-        jlP1.setText(partyBean.getJ1().getName());
-        jtfScoreP1.setText(partyBean.getJ1().getScore() + "");
-        jlP2.setText(partyBean.getJ2().getName());
-        jtfScoreP2.setText(partyBean.getJ2().getScore() + "");
-
-        jlTourNumber.setText(partyBean.getRound() + "");
-
-        jbRestart.setVisible(false);
-        jbRollP1.setVisible(false);
-        jbRollP2.setVisible(false);
-
-        if (partyBean.getRound() == 3) {
-            jbRestart.setVisible(true);
-        }
-        else if (partyBean.getCurrentPlayer() == partyBean.getJ1()) {
-            jbRollP1.setVisible(true);
-            jtfD1.setText(partyBean.getJ2().getCup().getD1().getValue() + "");
-            jtfD2.setText(partyBean.getJ2().getCup().getD2().getValue() + "");
-        } else {
-            jbRollP2.setVisible(true);
-            jtfD1.setText(partyBean.getJ1().getCup().getD1().getValue() + "");
-            jtfD2.setText(partyBean.getJ1().getCup().getD2().getValue() + "");
-
-        }
-
-
+    public void updateInfoJ1(String name, int score){
+        jlP1.setText(name);
+        jtfScoreP1.setText(score + "");
     }
+
+    public void updateInfoJ2(String name, int score){
+        jlP1.setText(name);
+        jtfScoreP1.setText(score + "");
+    }
+
+    public void updateTourNumber(int tour){
+        jlTourNumber.setText(tour + "");
+    }
+
+    public void updateVisiblityBt(boolean btRollJ1, boolean btRollJ2, boolean btRestart){
+        jbRestart.setVisible(btRestart);
+        jbRollP1.setVisible(btRollJ1);
+        jbRollP2.setVisible(btRollJ2);
+    }
+
+    public void updateDiceValue(int d1, int d2){
+        jtfD1.setText(d1 + "");
+        jtfD2.setText(d2 + "");
+    }
+
 }
